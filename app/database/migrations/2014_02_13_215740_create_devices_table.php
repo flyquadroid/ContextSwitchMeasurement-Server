@@ -32,6 +32,22 @@ class CreateDevicesTable extends Migration {
 			$table->string('jni_from_java_to_c', 100)->default($default);
 			$table->string('jni_from_c_to_java', 100)->default($default);
 			$table->string('jni_delta', 100)->default($default);
+			$table->string('acce_latency_sdk', 100)->default($default);
+			$table->string('acce_latency_ndk', 100)->default($default);
+			$table->string('acce_freq_sdk', 100)->default($default);
+			$table->string('acce_freq_ndk', 100)->default($default);
+			$table->string('gyro_latency_sdk', 100)->default($default);
+			$table->string('gyro_latency_ndk', 100)->default($default);
+			$table->string('gyro_freq_sdk', 100)->default($default);
+			$table->string('gyro_freq_ndk', 100)->default($default);
+			$table->string('magnetometer_latency_sdk', 100)->default($default);
+			$table->string('magnetometer_latency_ndk', 100)->default($default);
+			$table->string('magnetometer_freq_sdk', 100)->default($default);
+			$table->string('magnetometer_freq_ndk', 100)->default($default);
+			$table->string('barometer_latency_sdk', 100)->default($default);
+			$table->string('barometer_latency_ndk', 100)->default($default);
+			$table->string('barometer_freq_sdk', 100)->default($default);
+			$table->string('barometer_freq_ndk', 100)->default($default);
 			$table->timestamps();
 		});
 	}

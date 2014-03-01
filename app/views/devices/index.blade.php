@@ -35,13 +35,29 @@
 							<th>JNI Java→C</th>
 							<th>JNI C→Java</th>
 							<th>JNI Delta</th>
+							<th>Acce Latency SDK</th>
+							<th>Acce Latency NDK</th>
+							<th>Acce Freq SDK</th>
+							<th>Acce Freq NDK</th>
+							<th>Gyro Latency SDK</th>
+							<th>Gyro Latency NDK</th>
+							<th>Gyro Freq SDK</th>
+							<th>Gyro Freq NDK</th>
+							<th>Magnetometer Latency SDK</th>
+							<th>Magnetometer Latency NDK</th>
+							<th>Magnetometer Freq SDK</th>
+							<th>Magnetometer Freq NDK</th>
+							<th>Barometer Latency SDK</th>
+							<th>Barometer Latency NDK</th>
+							<th>Barometer Freq SDK</th>
+							<th>Barometer Freq NDK</th>
 							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($devices as $device)
 							<tr>
-								<td><strong>{{ $device->model }}</strong></td>
+								<td>{{ $device->model }}</td>
 								<td>{{ $device->brand }}</td>
 								<td>{{ $device->product }}</td>
 								<td>{{ $device->manufacturer }}</td>
@@ -55,9 +71,25 @@
 								<td>{{ $device->memory_usage }}</td>
 								<td>{{ $device->kernel }}</td>
 								<td>{{ $device->android }}</td>
-								<td><strong>{{ $device->jni_from_java_to_c }}</strong></td>
-								<td><strong>{{ $device->jni_from_c_to_java }}</strong></td>
-								<td><strong>{{ $device->jni_delta }}</strong></td>
+								<td>{{ $device->jni_from_java_to_c }}</td>
+								<td>{{ $device->jni_from_c_to_java }}</td>
+								<td>{{ $device->jni_delta }}</td>
+								<td>{{ $device->acce_latency_sdk }}</td>
+								<td>{{ $device->acce_latency_ndk }}</td>
+								<td>{{ $device->acce_freq_sdk }}</td>
+								<td>{{ $device->acce_freq_ndk }}</td>
+								<td>{{ $device->gyro_latency_sdk }}</td>
+								<td>{{ $device->gyro_latency_ndk }}</td>
+								<td>{{ $device->gyro_freq_sdk }}</td>
+								<td>{{ $device->gyro_freq_ndk }}</td>
+								<td>{{ $device->magnetometer_latency_sdk }}</td>
+								<td>{{ $device->magnetometer_latency_ndk }}</td>
+								<td>{{ $device->magnetometer_freq_sdk }}</td>
+								<td>{{ $device->magnetometer_freq_ndk }}</td>
+								<td>{{ $device->barometer_latency_sdk }}</td>
+								<td>{{ $device->barometer_latency_ndk }}</td>
+								<td>{{ $device->barometer_freq_sdk }}</td>
+								<td>{{ $device->barometer_freq_ndk }}</td>
 								<td>{{ $device->created_at }}</td>
 							</tr>
 						@endforeach
