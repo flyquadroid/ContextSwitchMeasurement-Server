@@ -96,7 +96,9 @@
 					</tbody>
 				</table>
 				<div>
-					<h4>JNI to Java</h4>
+
+					{{-- JNI --}}
+					<h4>JNI</h4>
 					<small>
 						<?php
 							$coordinates = "";
@@ -172,6 +174,7 @@ axis on top]
 
 @endforeach
 \end{filecontents}
+\begin{figure}[ht]
 \begin{tikzpicture}
 \begin{axis}[xlabel={Test},ylabel={Nanoseconds (NS)}]
 \addplot table[x index=0,y index=1,col sep=comma] {jni.dat};
@@ -182,6 +185,8 @@ axis on top]
 \addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ (int)($average_c_to_java/$devices->count()) }} };
 \end{axis}
 \end{tikzpicture}
+\caption{TITLE}
+\end{figure}
 </pre>
 <pre>
 \begin{filecontents}{jni_delta.dat}
@@ -190,6 +195,7 @@ axis on top]
 
 @endforeach
 \end{filecontents}
+\begin{figure}[ht]
 \begin{tikzpicture}
 \begin{axis}[xlabel={Test},ylabel={Nanoseconds (NS)}]
 \addplot table[x index=0,y index=1,col sep=comma] {jni_delta.dat};
@@ -197,9 +203,356 @@ axis on top]
 \addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ (int)($average_jni_delta/$devices->count()) }} };
 \end{axis}
 \end{tikzpicture}
+\caption{TITLE}
+\end{figure}
 </pre>
 					</small>
 				</div>
+
+				{{-- Accelerometer Latency --}}
+				<div>
+					<?php
+						$title = "Accelerometer Latency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->acce_latency_sdk;
+							$average_ndk += $device->acce_latency_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{acce_lat.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->acce_latency_sdk}},{{$device->acce_latency_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {acce_lat.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {acce_lat.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Accelerometer Frequency --}}
+				<div>
+					<?php
+						$title = "Accelerometer Frequency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->acce_freq_sdk;
+							$average_ndk += $device->acce_freq_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{acce_freq.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->acce_freq_sdk}},{{$device->acce_freq_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {acce_freq.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {acce_freq.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Gyroscope Latency --}}
+				<div>
+					<?php
+						$title = "Gyroscope Latency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->gyro_latency_sdk;
+							$average_ndk += $device->gyro_latency_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{gyro_lat.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->gyro_latency_sdk}},{{$device->gyro_latency_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {gyro_lat.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {gyro_lat.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Gyroscope Frequency --}}
+				<div>
+					<?php
+						$title = "Gyroscope Frequency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->gyro_freq_sdk;
+							$average_ndk += $device->gyro_freq_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{gyro_freq.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->gyro_freq_sdk}},{{$device->gyro_freq_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {gyro_freq.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {gyro_freq.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Magnetometer Latency --}}
+				<div>
+					<?php
+						$title = "Magnetometer Latency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->magnetometer_latency_sdk;
+							$average_ndk += $device->magnetometer_latency_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{magnetometer_lat.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->magnetometer_latency_sdk}},{{$device->magnetometer_latency_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {magnetometer_lat.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {magnetometer_lat.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Magnetometer Frequency --}}
+				<div>
+					<?php
+						$title = "Magnetometer Frequency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->magnetometer_freq_sdk;
+							$average_ndk += $device->magnetometer_freq_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{magnetometer_freq.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->magnetometer_freq_sdk}},{{$device->magnetometer_freq_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {magnetometer_freq.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {magnetometer_freq.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Barometer Latency --}}
+				<div>
+					<?php
+						$title = "Barometer Latency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->barometer_latency_sdk;
+							$average_ndk += $device->barometer_latency_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{barometer_lat.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->barometer_latency_sdk}},{{$device->barometer_latency_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {barometer_lat.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {barometer_lat.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
+				{{-- Barometer Frequency --}}
+				<div>
+					<?php
+						$title = "Barometer Frequency";
+						$average_sdk = 0;
+						$average_ndk = 0;
+					?>
+					@foreach ($devices as $index => $device)
+						<?php
+							$average_sdk += $device->barometer_freq_sdk;
+							$average_ndk += $device->barometer_freq_ndk;
+						?>
+					@endforeach
+					<?php
+						$average_sdk = (int)($average_sdk/$devices->count());
+						$average_ndk = (int)($average_ndk/$devices->count());
+					?>
+					<h4>{{ $title }}</h4>
+					<small>
+<pre>
+\begin{filecontents}{barometer_freq.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->barometer_freq_sdk}},{{$device->barometer_freq_ndk}}
+
+@endforeach
+\end{filecontents}
+\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Milliseconds (MS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {barometer_freq.dat};
+\addlegendentry{ {{ $title }} SDK }
+\addplot table[x index=0,y index=2,col sep=comma] {barometer_freq.dat};
+\addlegendentry{ {{ $title }} NDK }
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_sdk }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ $average_ndk }} };
+\end{axis}
+\end{tikzpicture}
+\caption{ {{ $title }} }
+\end{figure}
+</pre>
+					</small>
+				</div>
+
 			@endif
 		</div>
 	</body>
