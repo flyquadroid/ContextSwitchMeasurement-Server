@@ -12,7 +12,7 @@
 		<![endif]-->
 	</head>
 	<body>
-		<div class="container">
+		<div style="width: 4500px; padding: 50px;">
 			<div style="padding: 50px 0 30px; text-style: italic;">Einträge: {{ $devices->count() }}</div>
 			@if ($devices->count())
 				<table class="table table-condensed table-hover">
@@ -95,6 +95,111 @@
 						@endforeach
 					</tbody>
 				</table>
+				<div>
+					<h4>JNI to Java</h4>
+					<small>
+						<?php
+							$coordinates = "";
+							$ymin = INF;
+							$ymax = INF;
+							$average = 0;
+						?>
+						@foreach ($devices as $index => $device)
+							<?php
+								$n = $device->jni_from_java_to_c;
+								$coordinates .= " (".($index+1).",".$n.")";
+								if(is_infinite($ymin)){
+									$ymin = $n;
+								} else {
+									if($n<$ymin){
+										$ymin = $n;
+									}
+								}
+								if(is_infinite($ymax)){
+									$ymax = $n;
+								} else {
+									if($n>$ymax){
+										$ymax = $n;
+									}
+								}
+								$average+=$n;
+							?>
+						@endforeach
+						<pre>\begin{figure}[ht]
+\begin{tikzpicture}
+\begin{axis}[
+axis lines=middle,
+scale only axis,
+width=2.8in,
+height=2in,
+xtick=data,
+xmin=1, xmax={{ $devices->count() }},
+ymin={{ ($ymin-10) }}, ymax={{ ($ymax+10) }},
+nodes near coords,
+axis on top]
+\addplot[
+  ybar,
+  bar width=0.2in,
+  bar shift=0in,
+  fill=blue,
+  draw=black]
+  plot coordinates{
+    {{ $coordinates }}
+  };
+\end{axis}
+\end{tikzpicture}
+\caption{caption}
+\label{fig:label}
+\end{figure}</pre>
+						<div>Average: {{ $average/$devices->count() }}</div>
+						<hr>
+						<?php
+							$average_java_to_c = 0;
+							$average_c_to_java = 0;
+							$average_jni_delta = 0;
+						?>
+						@foreach ($devices as $index => $device)
+							<?php
+								$average_java_to_c += $device->jni_from_java_to_c;
+								$average_c_to_java += $device->jni_from_c_to_java;
+								$average_jni_delta += ($device->jni_from_c_to_java-$device->jni_from_java_to_c);
+							?>
+						@endforeach
+<pre>
+\begin{filecontents}{jni.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{$device->jni_from_java_to_c}},{{$device->jni_from_c_to_java}}
+
+@endforeach
+\end{filecontents}
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Nanoseconds (NS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {jni.dat};
+\addlegendentry{Java to C}
+\addplot table[x index=0,y index=2,col sep=comma] {jni.dat};
+\addlegendentry{C to Java}
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ (int)($average_java_to_c/$devices->count()) }} };
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ (int)($average_c_to_java/$devices->count()) }} };
+\end{axis}
+\end{tikzpicture}
+</pre>
+<pre>
+\begin{filecontents}{jni_delta.dat}
+@foreach ($devices as $index => $device)
+{{ ($index+1) }},{{($device->jni_from_c_to_java-$device->jni_from_java_to_c)}}
+
+@endforeach
+\end{filecontents}
+\begin{tikzpicture}
+\begin{axis}[xlabel={Test},ylabel={Nanoseconds (NS)}]
+\addplot table[x index=0,y index=1,col sep=comma] {jni_delta.dat};
+\addlegendentry{Delta between Java and C}
+\addplot [mark=none, thin, domain=1:{{ $devices->count() }}, samples=2] { {{ (int)($average_jni_delta/$devices->count()) }} };
+\end{axis}
+\end{tikzpicture}
+</pre>
+					</small>
+				</div>
 			@endif
 		</div>
 	</body>
